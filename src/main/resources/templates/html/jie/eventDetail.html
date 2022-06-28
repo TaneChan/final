@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title th:text="${detail.etitle}"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{../../res/layui/css/layui.css}"/>
+    <link rel="stylesheet" th:href="@{../../res/css/global.css}"/>
+</head>
+<body>
+
+<div th:replace="~{/html/commom/topbar :: #front-topbar}"></div>
+
+<div class="layui-hide-xs">
+    <div class="fly-panel fly-column">
+        <div class="layui-container">
+            <ul class="layui-clear">
+                <li class="layui-hide-xs"><a th:href="@{/HRLY/indexAll}">首页</a></li>
+                <li><a th:href="@{/HRLY/index2}">古诗词</a></li>
+                <li><a th:href="@{/HRLY/index1}">现代诗词</a></li>
+                <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li>
+                <!-- 用户登入后显示 -->
+                <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a
+                        th:href="@{/HRLY/userIndex}">我发表的贴</a>
+                </li>
+            </ul>
+
+            <div class="fly-column-right layui-hide-xs">
+                <span class="fly-search"><i class="layui-icon"></i></span>
+                <a th:href="@{/HRLY/toAdd}" class="layui-btn">发表新帖</a>
+            </div>
+            <div class="layui-hide-sm layui-show-xs-block"
+                 style="margin-top: -10px; padding-bottom: 10px; text-align: center;">
+                <a th:href="@{/HRLY/toAdd}" class="layui-btn">发表新帖</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-container">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md8 content detail">
+            <div class="fly-panel detail-box">
+                <h1 th:text="${detail.etitle}">Fly Template v3.0，基于 layui 的极简社区页面模版</h1><!--标题-->
+                <!--<div class="fly-detail-info">
+                  &lt;!&ndash; <span class="layui-badge">审核中</span> &ndash;&gt;
+                  <span class="layui-badge layui-bg-green fly-detail-column">动态</span>
+
+                  <span class="layui-badge" style="background-color: #999;">未结</span>
+                  &lt;!&ndash; <span class="layui-badge" style="background-color: #5FB878;">已结</span> &ndash;&gt;
+
+                  <span class="layui-badge layui-bg-black">置顶</span>
+                  <span class="layui-badge layui-bg-red">精帖</span>
+
+                  <div class="fly-admin-box" data-id="123">
+                    <span class="layui-btn layui-btn-xs jie-admin" type="del">删除</span>
+
+                    <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="1">置顶</span>
+                    &lt;!&ndash; <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;">取消置顶</span> &ndash;&gt;
+
+                    <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1">加精</span>
+                    &lt;!&ndash; <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;">取消加精</span> &ndash;&gt;
+                  </div>
+                  <span class="fly-list-nums">
+                    <a href="#comment"><i class="iconfont" title="回答">&#xe60c;</i> 66</a>
+                    <i class="iconfont" title="人气">&#xe60b;</i> 99999
+                  </span>
+                </div>-->
+                <div class="detail-about">
+                    <a class="fly-avatar">
+                        <img src="http://localhost:8081/img/timg.jpg">
+                    </a><!--头像-->
+                    <div class="fly-detail-user">
+                        <h2>
+                            <a class="layui-badge" th:if="${detail.epoint1}==1">公告</a>
+                            <a class="layui-badge" th:if="${detail.epoint1}==3">现代诗周常征文</a>
+                            <a class="layui-badge" th:if="${detail.epoint1}==5">现代诗节日征文</a>
+                            <a class="layui-badge" th:if="${detail.epoint2}==1">公告</a>
+                            <a class="layui-badge" th:if="${detail.epoint2}==3">古诗词周常征文</a>
+                            <a class="layui-badge" th:if="${detail.epoint2}==5">古诗词节日征文</a>
+                        </h2>
+                        <span th:text="${#dates.format(detail.startime,'yyyy-MM-dd')}"></span>
+                        <span th:text="${#dates.format(detail.endtime,'yyyy-MM-dd HH:mm:ss')}"></span><!--发表时间-->
+                    </div><!--用户名-->
+                    <div class="detail-body photos">
+                        <!--主题内容-->
+                        <span th:utext="${detail.econtent}"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="fly-panel detail-box" id="flyReply"><!--回复区-->
+                <fieldset class="layui-elem-field layui-field-title" style="text-align: center;">
+                    <legend>诗仙下凡</legend>
+                </fieldset>
+                <ul class="jieda" th:each="good:${goods}">
+                    <li data-id="111" class="jieda-daan">
+                        <a name="item-1111111111"></a>
+                        <div class="detail-about detail-about-reply">
+                            <a class="fly-avatar" th:href="@{/HRLY/seehome(id=${good.uid})}">
+                                <img src="http://localhost:8081/img/timg.jpg" alt=" ">
+                            </a><!--头像-->
+                            <div class="fly-detail-user">
+                                <a th:href="@{/HRLY/seehome(id=${good.uid})}" class="fly-link">
+                                    <cite><span th:text="${good.uname}"></span></cite><!--用戶名-->
+                                    <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
+                                </a>
+
+                                <span></span>
+                                <!--
+                                <span style="color:#5FB878">(管理员)</span>
+                                <span style="color:#FF9E3F">（社区之光）</span>
+                                <span style="color:#999">（该号已被封）</span>
+                                -->
+                            </div>
+
+                            <div class="detail-hits">
+                                <span th:text="${#dates.format(good.date,'yyyy-MM-dd HH:mm:ss')}"></span>
+                                <!--回复时间-->
+                            </div>
+                            <i class="iconfont icon-caina" title="最佳答案"></i>
+                        </div>
+                        <div class="detail-body jieda-body photos">
+                            <span th:utext="${good.content}"></span>
+                            <!--内容-->
+                        </div>
+                        <div class="jieda-reply">
+                            <!--<div class="jieda-admin">-->
+                            <!--<span th:if="${good.uname==userinfo.name}" type="edit">采纳!</span>-->
+                            <span th:if="${userinfo.position}=='1'" type="del">
+                                    <a th:href="@{/HRLY/moveGood(id=${good.id},eid=${good.eid},uid=${good.uid})}"
+                                       class="fly-list-info">
+                                        删除
+                                    </a>
+                                </span>
+                            <!-- <span class="jieda-accept" type="accept">采纳</span> -->
+                            <!--</div>-->
+                        </div>
+                    </li>
+
+                    <!-- 无数据时 -->
+                    <!-- <li class="fly-none">消灭零回复</li> -->
+                </ul>
+
+                <fieldset class="layui-elem-field layui-field-title" style="text-align: center;">
+                    <legend>回帖</legend>
+                </fieldset>
+
+                <ul class="jieda" th:each="reply:${replies}">
+                    <li data-id="111" class="jieda-daan">
+                        <a name="item-1111111111"></a>
+                        <div class="detail-about detail-about-reply">
+                            <a class="fly-avatar" href="">
+                                <img src="http://localhost:8081/img/timg.jpg" alt=" ">
+                            </a><!--头像-->
+                            <div class="fly-detail-user">
+                                <a th:href="@{/HRLY/seehome(id=${reply.uid})}" class="fly-link">
+                                    <cite><span th:text="${reply.uname}"></span></cite><!--用戶名-->
+                                    <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
+                                </a>
+
+                                <span></span>
+                                <!--
+                                <span style="color:#5FB878">(管理员)</span>
+                                <span style="color:#FF9E3F">（社区之光）</span>
+                                <span style="color:#999">（该号已被封）</span>
+                                -->
+                            </div>
+
+                            <div class="detail-hits">
+                                <span th:text="${#dates.format(reply.date,'yyyy-MM-dd HH:mm:ss')}"></span>
+                                <!--回复时间-->
+                            </div>
+                        </div>
+                        <div class="detail-body jieda-body photos">
+                            <span th:utext="${reply.content}"></span>
+                            <!--内容-->
+                        </div>
+                        <div class="jieda-reply">
+                            <!--<div class="jieda-admin">-->
+                            <span th:if="${userinfo.position}=='1'">
+                                    <a type="edit" class="fly-list-info"
+                                       th:href="@{/HRLY/like(eid=${detail.eid},epoint1=${detail.epoint1},epoint2=${detail.epoint2},erid=${reply.erid},uid=${reply.uid})}">
+                                        采纳!
+                                    </a>
+                                </span>
+                            <span th:if="${userinfo.position}=='1'"><a
+                                    th:href="@{/HRLY/moveEventReply(eid=${detail.eid},erid=${reply.erid})}"
+                                    class="fly-list-info">删除</a></span>
+                            <!-- <span class="jieda-accept" type="accept">采纳</span> -->
+                            <!--</div>-->
+                        </div>
+                    </li>
+
+                    <!-- 无数据时 -->
+                    <!-- <li class="fly-none">消灭零回复</li> -->
+                </ul>
+
+                <div class="layui-form layui-form-pane">
+                    <form method="post"
+                          th:action="@{/HRLY/replyEvent}">
+                        <!--(etitle=${detail.etitle},eid=${detail.eid},uid=${userinfo.id},uname=${userinfo.name})-->
+                        <div class="layui-form-item layui-form-text" id="editor">
+                            <!--编辑器-->
+                        </div>
+                        <div hidden>
+                            <input th:value="${userinfo.name}" name="uname">
+                            <input th:value="${userinfo.id}" name="uid">
+                            <input th:value="${detail.eid}" name="eid">
+                            <input th:value="${detail.etitle}" name="etitle">
+                            <input id="eventcontent" name="content">
+                        </div>
+                        <button type="submit" class="layui-btn" id="btnf">回复</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div th:replace="~{/html/index::#index-osusume}"></div>
+    </div>
+</div>
+
+<div class="fly-footer">
+
+</div>
+
+<script th:src="@{../../res/layui/layui.js}"></script>
+<script th:src="@{../../res/jquery-3.1.1.min.js}"></script>
+<script th:src="@{../../res/wangEditor.js}"></script>
+<script>
+    var E = window.wangEditor
+    var editor = new E('#editor')
+    editor.create()
+    document.getElementById('btnf').addEventListener('click', function () {
+// 读取 html
+        var content = editor.txt.html();
+        console.log(content);
+        document.getElementById('eventcontent').value = content;
+    }, false)
+</script>
+<script>
+    layui.config({
+        version: "3.0.0"
+        , base: '../../res/mods/'
+    }).extend({
+        fly: 'index'
+    }).use('fly');
+</script>
+
+</body>
+</html>

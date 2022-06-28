@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>蓝楹诗社后台管理系统—主题编辑</title>
+    <link rel="stylesheet" th:href="@{../../res/layui/css/layui.css}">
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <!--头部-->
+    <div th:replace="~{/html/admin/common/common :: #admin-topbar}"></div>
+    <div th:replace="~{/html/admin/common/common :: #admin-sidebar}"></div>
+    <!--主体部分-->
+    <div class="layui-body">
+        <div class="layui-row" style="padding: 15px;">
+            <!--图片上传-->
+            <div class="layui-elem-quote">
+                <p th:text="${userinfo.name}+'，欢迎回来！'"></p>
+            </div>
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>主题编辑</legend>
+            </fieldset>
+            <div class="layui-col-md10">
+                <!--表单-->
+                <div class="layui-form layui-form-pane">
+                    <form class="layui-form"
+                          th:action="@{/Post/updatePost(pid=${post.pid})}" method="post" lay-filter="example">
+                        <!--活动名称-->
+                        <div class="layui-form-item">
+                            <div class="layui-col-md6">
+                                <label class="layui-form-label">标题</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="ptitle" lay-verify="required" autocomplete="off"  th:value="${post.ptitle}"
+                                           class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                        <!--活动内容-->
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <div class="layui-form-item layui-form-text" id="editor">
+                                    <input class="layui-hide" id="editor_txt" name="pcontent" th:value="${post.pcontent}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-col-md3">
+                                <label class="layui-form-label">所属版块</label>
+                                <div class="layui-input-inline">
+                                    <select name="psession" lay-verify="">
+                                        <option th:value="${post.psession}" selected></option>
+                                        <option value="1">现代诗词</option>
+                                        <option value="2">古诗词</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!--添加活动-->
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button type="submit" class="layui-btn" id="btn1">修改主题</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        ©
+    </div>
+</div>
+<script th:src="@{../../res/layui/layui.js}"></script>
+<script th:src="@{../../res/jquery-3.1.1.min.js}"></script>
+<script th:src="@{../../res/wangEditor.js}"></script>
+<script th:src="@{../../res/mods/index.js}"></script>
+<script>
+    /* var base="@{'../../res/mods/}";
+      layui.config({
+          version: "3.0.0"
+          ,base: base
+      }).extend({
+          fly: 'index'
+      }).use('fly');*/
+    //JavaScript代码区域
+    layui.use('element', function () {
+        var element = layui.element;
+    });
+
+    layui.use('laydate', function () {
+        var laydate1 = layui.laydate;
+        var laydate2 = layui.laydate;
+
+        //执行一个laydate实例
+        laydate1.render({
+            elem: '#laydate1', //指定元素
+            type: 'datetime',
+            format: 'yyyy-MM-dd HH:mm:ss'
+        });
+        laydate2.render({
+            elem: '#laydate2',
+            type: 'datetime',
+            format: 'yyyy-MM-dd HH:mm:ss'
+        });
+    });
+
+    layui.use('table', function () {
+        var table = layui.table;
+        table.render({
+            cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+        });
+    });
+    layui.use(['layer', 'form'], function () {
+    });
+    layui.use('form', function () {
+        var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+
+        //……
+
+        //但是，如果你的HTML是动态生成的，自动渲染就会失效
+        //因此你需要在相应的地方，执行下述方法来进行渲染
+        form.render();
+    });
+
+</script>
+<script th:inline="javascript">
+    var E = window.wangEditor
+    var editor = new E('#editor')
+    var pcontent = [[${post.pcontent}]]
+    editor.create()
+    editor.txt.html(pcontent)
+    document.getElementById('btn1').addEventListener('click', function () {
+// 读取 html
+        var editor_txt = editor.txt.html();
+        document.getElementById('editor_txt').value = editor_txt;
+    }, false)
+</script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>蓝楹诗社后台管理系统—活动回复</title>
+    <link rel="stylesheet" th:href="@{../../res/layui/css/layui.css}">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="~{/html/admin/common/common :: #admin-topbar}"></div>
+    <div th:replace="~{/html/admin/common/common :: #admin-sidebar}"></div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <!--数据表-->
+        <div class="layui-row" style="padding: 15px">
+            <div class="layui-elem-quote">
+                <p th:text="${userinfo.name}+'，欢迎回来！'"></p>
+            </div>
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>活动回复</legend>
+            </fieldset>
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>该活动所有回复</legend>
+                <!--搜索框-->
+                <div class="layui-col-md9" style="padding: 15px">
+                    <form th:action="@{/Event/searchERByUid}">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <input type="text" name="uid" autocomplete="on" class="layui-input">
+                            </div>
+                            <input type="hidden" name="eid" th:value="${event.eid}">
+                            <button type="submit" class="layui-btn">搜索</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-field-box">
+                    <div class="layui-col-md5" th:each="reply : ${reply.list}" style="padding: 15px;">
+                        <div class="layui-collapse">
+                            <div class="layui-colla-item">
+                                <h2 class="layui-colla-title" th:text="${reply.uname}"></h2>
+                                <div class="layui-colla-content layui-show">
+                                    <a th:href="@{/Event/goodev(eid=${reply.eid},uid=${reply.uid},erid=${reply.erid})}"><i
+                                            class="layui-icon">&#xe642;</i><span
+                                            class="layui-word-aux">设为优秀回复</span></a>
+                                    <a th:href="@{/Event/deleteER(eid=${reply.eid},erid=${reply.erid})}"><i
+                                            class="layui-icon">&#xe640;</i><span class="layui-word-aux">删除</span></a>
+                                </div>
+                                <div class="layui-colla-content layui-show">
+                                    <p th:utext="${reply.content}"></p><br>
+                                    <p class="layui-word-aux"
+                                       th:text="${#dates.format(reply.date,'yyyy-MM-dd HH:mm:ss')}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>该活动优秀回复</legend>
+                <div class="layui-field-box">
+                    <div class="layui-col-md5" th:each="good: ${goodreply}" style="padding: 15px;">
+                        <div class="layui-collapse">
+                            <div class="layui-colla-item">
+                                <h2 class="layui-colla-title" th:text="${good.uname}"></h2>
+                                <div class="layui-colla-content layui-show">
+                                    <p th:utext="${good.content}"></p><br>
+                                    <p class="layui-word-aux"
+                                       th:text="${#dates.format(good.date,'yyyy-MM-dd HH:mm:ss')}"></p>
+                                    <a th:href="@{/Event/deleteGood(eid=${good.eid},id=${good.id},uid=${good.uid})}"><i class="layui-icon">&#xe640;</i><span class="layui-word-aux">删除</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <!--<div class="layui-hide" id="table" lay-filter="test">
+        </div>-->
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+    </div>
+</div>
+<script th:src="@{../../res/layui/layui.js}"></script>
+<script th:src="@{../../res/jquery-3.1.1.min.js}"></script>
+<script>
+    //JavaScript代码区域
+    layui.use('element', function () {
+        var element = layui.element;
+    });
+    /*layui.use('laypage', function () {
+        var laypage = layui.laypage;
+        laypage.render({
+            elem: 'table' //注意，这里的 test1 是 ID，不用加 # 号
+            , count: 10 //数据总数，从服务端得到
+        });
+    });*/
+</script>
+</body>
+</html>

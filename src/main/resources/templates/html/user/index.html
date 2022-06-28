@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.w3.org/1999/xhtml"
+        xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="utf-8">
+    <title>用户中心</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{../../res/layui/css/layui.css}"/>
+    <link rel="stylesheet" th:href="@{../../res/css/global.css}"/>
+</head>
+<body>
+
+<div class="fly-header layui-bg-black">
+    <div class="layui-container">
+        <a class="fly-logo" th:href="@{/HRLY/index}">
+            <img src="http://localhost:8081/img/00.jpg">
+        </a>
+        <ul class="layui-nav fly-nav">
+            <li class="layui-nav-item">
+                <a th:href="@{/HRLY/home}"><i class="layui-icon">&#xe68e;</i>用户主页</a>
+            </li>
+            <li class="layui-nav-item layui-hide-xs" shiro:hasPermission="1">
+                <a th:href="@{/User/userManage}"><i class="iconfont icon-jiaoliu"></i>后台管理系统</a>
+            </li>
+        </ul>
+        <ul class="layui-nav fly-nav-user">
+            <!-- 登入后的状态 -->
+            <li class="layui-nav-item">
+                <a class="fly-nav-avatar" href="javascript:;">
+                    <!--用户名-->
+                    <cite class="layui-hide-xs">
+                        <a th:herf="@{/HRLY/userIndex}" th:text="${userinfo.name}"></a>
+                        <!--<span shiro:principal property="name"/>-->
+                    </cite>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd class="layui-this"><a th:href="@{/HRLY/userIndex}"><i class="layui-icon"
+                                                           style="margin-left: 2px; font-size: 22px;">&#xe612;</i>用户中心</a>
+                    </dd>
+                    <dd><a th:href="@{/HRLY/setting}"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
+                    <dd><a th:href="@{/HRLY/home}"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a>
+                    </dd>
+                    <hr style="margin: 5px 0;">
+                    <dd><a th:href="@{/User/Logout}" style="text-align: center;">退出</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="layui-container fly-marginTop fly-user-main">
+    <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
+        <li class="layui-nav-item">
+            <a th:href="@{/HRLY/home}">
+                <i class="layui-icon">&#xe609;</i>
+                我的主页
+            </a>
+        </li>
+        <li class="layui-nav-item layui-this">
+            <a th:href="@{/HRLY/userIndex}">
+                <i class="layui-icon">&#xe612;</i>
+                用户中心
+            </a>
+        </li>
+        <li class="layui-nav-item">
+            <a th:href="@{/HRLY/setting}">
+                <i class="layui-icon">&#xe620;</i>
+                基本设置
+            </a>
+        </li>
+    </ul>
+
+    <div class="site-tree-mobile layui-hide">
+        <i class="layui-icon">&#xe602;</i>
+    </div>
+    <div class="site-mobile-shade"></div>
+
+    <div class="site-tree-mobile layui-hide">
+        <i class="layui-icon">&#xe602;</i>
+    </div>
+    <div class="site-mobile-shade"></div>
+
+
+    <div class="fly-panel fly-panel-user" pad20>
+        <div class="layui-tab layui-tab-brief" lay-filter="user">
+            <ul class="layui-tab-title" id="LAY_mine">
+                <li data-type="mine-jie" lay-id="index" class="layui-this">我发的帖</li>
+                <li data-type="collection" data-url="/collection/find/" lay-id="collection">我参与的活动</li>
+            </ul>
+            <div class="layui-tab-content" style="padding: 20px 0;">
+                <div class="layui-tab-item layui-show">
+                    <ul class="mine-view jie-row" th:each="post:${posts}">
+                        <li>
+                            <a class="jie-title" th:href="@{/HRLY/postDetail(pid=${post.pid})}" target="_blank" th:text="${post.ptitle}"></a>
+                            <i th:text="${#dates.format(post.pdate,'yyyy-MM-dd HH:mm:ss')}"></i>
+                            <a class="mine-edit" th:href="@{/HRLY/toEditPost(pid=${post.pid})}">编辑</a>
+                        </li>
+                    </ul>
+                    <div id="LAY_page"></div>
+                </div>
+                <div class="layui-tab-item">
+                    <ul class="mine-view jie-row" th:each="event:${event_reply}">
+                        <li>
+                            <a class="jie-title" th:href="@{/HRLY/eventDetail(eid=${event.eid})}" target="_blank"
+                               th:text="${event.etitle}"></a>
+                            <i>于<span th:text="${#dates.format(event.date,'yyyy-MM-dd')}"></span>参加</i>
+                        </li>
+                    </ul>
+                    <div id="LAY_page1"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="fly-footer">
+</div>
+
+<script th:src="@{../../res/layui/layui.js}"></script>
+<script>
+    layui.cache.page = 'user';
+    layui.cache.user = {
+        username: '游客'
+        , uid: -1
+        , avatar: '../../res/images/avatar/00.jpg'
+        , experience: 83
+        , sex: '男'
+    };
+    layui.config({
+        version: "3.0.0"
+        , base: '../../res/mods/'
+    }).extend({
+        fly: 'index'
+    }).use('fly');
+</script>
+
+</body>
+</html>

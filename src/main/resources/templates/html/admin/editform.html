@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>layout 后台大布局 - Layui</title>
+    <link rel="stylesheet" th:href="@{../../res/layui/css/layui.css}">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="~{/html/admin/common/common :: #admin-topbar}"></div>
+    <div th:replace="~{/html/admin/common/common :: #admin-sidebar}"></div>
+
+    <!--主体部分-->
+    <div class="layui-body">
+        <div class="layui-row" style="padding: 15px;">
+            <!--图片上传-->
+            <div class="layui-elem-quote">
+                <p th:text="${userinfo.name}+'，欢迎回来！'"></p>
+            </div>
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>用户信息编辑</legend>
+            </fieldset>
+            <div class="layui-col-md3">
+                <!--<form th:action="@{/User/iconUpload}" method="post" enctype="multipart/form-data">
+                    <input type="file" name="file" accept="image/*">
+                    <br>
+                    <button type="submit" class="layui-btn"><i class="layui-icon">&#xe67c;</i>上传图片</button>
+                </form>-->
+                <!--<img src="../img/user/698f5ec8623f2fe1213741120f5999b0f98dbc8d.gif">-->
+            </div>
+            <div class="layui-col-md6">
+                <!--表单-->
+                <div class="layui-form layui-form-pane">
+                    <form class="layui-form"
+                          th:action="@{/User/userUpdate}" method="post" lay-filter="example">
+                        <!--学号-->
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">学号</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="uid" lay-verify="required" autocomplete="off" readonly
+                                       unselectable="on"
+                                       class="layui-input" th:value="${user.id}">
+                            </div>
+                        </div>
+                        <!--用户名-->
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">姓名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" lay-verify="required" autocomplete="off"
+                                       class="layui-input"
+                                       th:value="${user.name}">
+                            </div>
+                        </div>
+                        <!--用户密码-->
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">登录密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" name="password" lay-verify="required" autocomplete="off"
+                                       class="layui-input"
+                                       th:value="${user.password}">
+                            </div>
+                        </div>
+                        <!--性别-->
+                        <div class="layui-form-item ">
+                            <label class="layui-form-label">性别</label>
+                            <div class="layui-input-inline" th:switch="${user.sexual}">
+                                <div th:case="1">
+                                    <input type="radio" name="sex" th:value="1" title="男" checked="">
+                                    <input type="radio" name="sex" th:value="0" title="女">
+                                </div>
+                                <div th:case="0">
+                                    <input type="radio" name="sex" th:value="1" title="男">
+                                    <input type="radio" name="sex" th:value="0" title="女" checked="">
+                                </div>
+                            </div>
+                        </div>
+                        <!--用户邮箱-->
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">邮箱</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="email" lay-verify="email" autocomplete="off"
+                                       class="layui-input"
+                                       th:value="${user.email}">
+                            </div>
+                        </div>
+                        <!--古诗词版块积分-->
+                        <div class="layui-form-item" th:if="${user.id}!='admin'">
+                            <label class="layui-form-label">古诗词积分</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="point1" lay-verify="number" autocomplete="off"
+                                       class="layui-input"
+                                       th:value="${user.point1}">
+                            </div>
+                        </div>
+                        <!--现代诗词积分-->
+                        <div class="layui-form-item" th:if="${user.id}!='admin'">
+                            <label class="layui-form-label">现代诗积分</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="point2" lay-verify="number" autocomplete="off"
+                                       class="layui-input"
+                                       th:value="${user.point2}">
+                            </div>
+                        </div>
+                        <!--注册时间-->
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">注册时间</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="date" autocomplete="off" readonly unselectable="on"
+                                       class="layui-input" th:value="${#dates.format(user.date,'yyyy-MM-dd HH:mm:ss')}">
+                            </div>
+                        </div>
+                        <!--所属系别-->
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">系部门</label>
+                            <div class="layui-input-inline">
+                                <select name="apartment" lay-verify="" lay-search>
+                                    <option th:value="${user.apartment}" selected th:text="${user.apartment}"></option>
+                                    <option th:value="计算机系">计算机系</option>
+                                    <option th:value="软件工程系">软件工程系</option>
+                                    <option th:value="财会系">财会系</option>
+                                    <option th:value="国贸系">国贸系</option>
+                                    <option th:value="数码媒体系">数码媒体系</option>
+                                    <option th:value="电子系">电子系</option>
+                                    <option th:value="网络系">网络系</option>
+                                    <option th:value="游戏系">游戏系</option>
+                                    <option th:value="外语系">外语系</option>
+                                    <option th:value="管理系">管理系</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!--身份-->
+                        <div class="layui-form-item " th:if="${user.id}!='admin'">
+                            <label class="layui-form-label">社内身份</label>
+                            <div class="layui-input-block" th:switch="${user.position}">
+                                <div th:case="1">
+                                    <input type="radio" name="position" th:value="1" title="社长（管理员）" checked="">
+                                    <input type="radio" name="position" th:value="0" title="一般社员">
+                                </div>
+                                <div th:case="0">
+                                    <input type="radio" name="position" th:value="1" title="社长（管理员）">
+                                    <input type="radio" name="position" th:value="0" title="一般社员" checked="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button type="submit" class="layui-btn">修改</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="layui-footer">
+    <!-- 底部固定区域 -->
+    © layui.com - 底部固定区域
+</div>
+<script th:src="@{../../res/layui/layui.js}"></script>
+<script th:src="@{../../res/jquery-3.1.1.min.js}"></script>
+<script>
+    //JavaScript代码区域
+    layui.use('element', function () {
+        var element = layui.element;
+    });
+    layui.use('table', function () {
+        var table = layui.table;
+        table.render({
+            cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+        });
+    });
+    layui.use(['layer', 'form'], function () {
+    });
+    layui.use('form', function () {
+        var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+
+        //……
+
+        //但是，如果你的HTML是动态生成的，自动渲染就会失效
+        //因此你需要在相应的地方，执行下述方法来进行渲染
+        form.render();
+    });
+</script>
+</body>
+</html>

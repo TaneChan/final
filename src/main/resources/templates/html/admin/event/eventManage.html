@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>蓝楹诗社后台管理系统—活动</title>
+    <link rel="stylesheet" th:href="@{../../res/layui/css/layui.css}">
+
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="~{/html/admin/common/common :: #admin-topbar}"></div>
+    <div th:replace="~{/html/admin/common/common :: #admin-sidebar}"></div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div class="layui-row" style="padding: 15px;">
+            <!--搜索框-->
+            <div class="layui-elem-quote">
+                <p th:text="${userinfo.name}+'，欢迎回来！'"></p>
+            </div>
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>活动管理</legend>
+            </fieldset>
+            <div class="layui-col-md9">
+                <form th:action="@{/Event/searchEvent}">
+                    <div class="layui-form-item">
+                        <div class="layui-input-inline">
+                            <input type="text" name="etitle" autocomplete="on" class="layui-input">
+                        </div>
+                        <button type="submit" class="layui-btn">搜索</button>
+                    </div>
+                </form>
+            </div>
+            <!--添加活动-->
+            <div class="layui-col-md3">
+                <a class="layui-btn" th:href="@{/Event/toEventAdd}"><i class="layui-icon">&#xe654;</i>发布活动</a>
+            </div>
+            <!--数据表-->
+            <table class="layui-table" id="table" lay-skin="line" lay-size="lg">
+                <thead>
+                <tr>
+                    <th>活动编号</th>
+                    <th>活动名称</th>
+                    <th>回复数</th>
+                    <th>现代诗词积分</th>
+                    <th>古诗词积分</th>
+                    <th>报名时间</th>
+                    <th>截止时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="event : ${event.list}">
+                    <td scope="row" th:text="${event.eid}">1</td>
+                    <td th:text="${event.etitle}">neo</td>
+                    <td th:text="${event.ecount}">Otto</td>
+                    <td th:text="${event.epoint1}"></td>
+                    <td th:text="${event.epoint2}"></td>
+                    <td th:text="${#dates.format(event.startime,'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:text="${#dates.format(event.endtime,'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td>
+                        <a th:href="@{/Event/getReplyByEid(eid=${event.eid})}"><i class="layui-icon">&#xe613;</i></a>
+                        <a th:href="@{/Event/eventEdit(eid=${event.eid})}"><i class="layui-icon">&#xe642;</i></a>
+                        <!--<button type="button" class="layui-btn layui-btn-radius" id="editor">编辑</button>-->
+                        <a th:href="@{/Event/deleteEventById(eid=${event.eid})}"><i class="layui-icon">&#xe640;</i></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="layui-col-md9">
+                <div style="padding: 15px">
+                    <a class="layui-btn" th:href="@{/Event/eventManage(start=0)}">首页</a>
+                    <a class="layui-btn" th:href="@{/Event/eventManage(start=${event.pageNum-1})}"><i
+                            class="layui-icon">&#xe603;</i></a>
+                    <span th:text="'第'+${event.pageNum}+'页'"></span>
+                    <a class="layui-btn" th:href="@{/Event/eventManage(start=${event.pageNum+1})}"><i
+                            class="layui-icon">&#xe602;</i></a>
+                    <a class="layui-btn" th:href="@{/Event/eventManage(start=${event.pages})}">末页</a>
+                </div>
+            </div>
+        </div>
+        <!--<div class="layui-hide" id="table" lay-filter="test">
+        </div>-->
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © layui.com - 底部固定区域
+    </div>
+</div>
+<script th:src="@{../../res/layui/layui.js}"></script>
+<script th:src="@{../../res/jquery-3.1.1.min.js}"></script>
+<script th:src="@{../../res/wangEditor.js}"></script>
+<script>
+    //JavaScript代码区域
+    layui.use('element', function () {
+        var element = layui.element;
+    });
+    /*layui.use('laypage', function () {
+        var laypage = layui.laypage;
+        laypage.render({
+            elem: 'table' //注意，这里的 test1 是 ID，不用加 # 号
+            , count: 10 //数据总数，从服务端得到
+        });
+    });*/
+    var E = window.wangEditor
+    var editor = new E('#editor')
+    // 或者 var editor = new E( document.getElementById('editor') )
+    editor.create()
+</script>
+</body>
+</html>

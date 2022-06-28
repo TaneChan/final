@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>蓝楹诗社后台管理系统—活动编辑</title>
+    <link rel="stylesheet" th:href="@{../../res/layui/css/layui.css}">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="~{/html/admin/common/common :: #admin-topbar}"></div>
+    <div th:replace="~{/html/admin/common/common :: #admin-sidebar}"></div>
+
+    <!--主体部分-->
+    <div class="layui-body">
+        <div class="layui-row" style="padding: 15px;">
+            <div class="layui-elem-quote">
+                <p th:text="${userinfo.name}+'，欢迎回来！'"></p>
+            </div>
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>活动编辑</legend>
+            </fieldset>
+            <!--图片上传-->
+            <div class="layui-col-md10">
+                <!--表单-->
+                <form class="layui-form"
+                      th:action="@{/Event/eventUpdate(eid=${event.eid})}" method="post" lay-filter="example">
+                    <div class="layui-form-item">
+
+                    </div>
+                    <!--活动名称-->
+                    <div class="layui-form-item">
+                        <!--<div class="layui-col-md3">
+                            <label class="layui-form-label">编号</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="etitle" lay-verify="required" autocomplete="off" readonly
+                                       unselectable="on"
+                                       class="layui-input" th:value="${event.eid}">
+                            </div>
+                        </div>-->
+                        <div class="layui-col-md6">
+                            <label class="layui-form-label">标题</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="etitle" lay-verify="required" autocomplete="off"
+                                       class="layui-input" th:value="${event.etitle}">
+                            </div>
+                        </div>
+                    </div>
+                    <!--活动内容-->
+                    <div class="layui-form-item">
+                        <!--<label class="layui-form-label">活动内容</label>-->
+                        <div class="layui-input-block">
+                            <div class="layui-form-item layui-form-text" id="editor">
+                                <input class="layui-hide" id="editor_txt" name="econtent">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 活动类型-->
+                    <div class="layui-form-item">
+                        <div class="layui-col-md3">
+                            <label class="layui-form-label">现代诗活动</label>
+                            <div class="layui-input-inline">
+                                <span th:if="${event.epoint1}==0">
+                                <select name="epoint1" lay-verify="">
+                                    <option value="0" selected>公告(0)</option>
+                                    <option value="3">周常线上征文(3)</option>
+                                    <option value="5">节日线上征文(5)</option>
+                                </select>
+                                </span>
+                                <span th:if="${event.epoint1}==3">
+                                <select name="epoint1" lay-verify="">
+                                    <option value="0">公告(0)</option>
+                                    <option value="3" selected>周常线上征文(3)</option>
+                                    <option value="5">节日线上征文(5)</option>
+                                </select>
+                                </span>
+                                <span th:if="${event.epoint1}==5">
+                                <select name="epoint1" lay-verify="">
+                                    <option value="0">公告(0)</option>
+                                    <option value="3">周常线上征文(3)</option>
+                                    <option value="5" selected>节日线上征文(5)</option>
+                                </select>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="layui-col-md3">
+                            <label class="layui-form-label">古诗词活动</label>
+                            <div class="layui-input-inline">
+                                <span th:if="${event.epoint2}==0">
+                                <select name="epoint2" lay-verify="">
+                                    <option value="0" selected>公告(0)</option>
+                                    <option value="3">周常线上征文(3)</option>
+                                    <option value="5">节日线上征文(5)</option>
+                                </select>
+                                </span>
+                                <span th:if="${event.epoint2}==3">
+                                <select name="epoint2" lay-verify="">
+                                    <option value="0">公告(0)</option>
+                                    <option value="3" selected>周常线上征文(3)</option>
+                                    <option value="5">节日线上征文(5)</option>
+                                </select>
+                                </span>
+                                <span th:if="${event.epoint2}==5">
+                                <select name="epoint2" lay-verify="">
+                                    <option value="0">公告(0)</option>
+                                    <option value="3">周常线上征文(3)</option>
+                                    <option value="5" selected>节日线上征文(5)</option>
+                                </select>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--活动开始时间-->
+                    <div class="layui-form-item ">
+                        <div class="layui-col-md3">
+                            <label class="layui-form-label">开始时间</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="laydate1" name="startime"
+                                       th:value="${#dates.format(event.startime,'yyyy-MM-dd HH:mm:ss')}">
+                            </div>
+                        </div>
+                        <div class="layui-col-md3">
+                            <label class="layui-form-label">结束时间</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="laydate2" name="endtime"
+                                       th:value="${#dates.format(event.endtime,'yyyy-MM-dd HH:mm:ss')}">
+                            </div>
+                        </div>
+                    </div>
+                    <!--添加活动-->
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button type="submit" class="layui-btn" id="btn1">修改活动信息</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--<div class="layui-col-md6">
+                &lt;!&ndash;表单&ndash;&gt;
+                <form class="layui-form"
+                      th:action="@{/Event/eventUpdate}" method="post" lay-filter="example">
+                    &lt;!&ndash;活动编号&ndash;&gt;
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">活动编号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="eid" lay-verify="required" autocomplete="off" readonly
+                                   unselectable="on" th:value="${event.eid}"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    &lt;!&ndash;活动名称&ndash;&gt;
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">活动名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="etitle" lay-verify="required" autocomplete="off"
+                                   class="layui-input" th:value="${event.etitle}">
+                        </div>
+                    </div>
+                    &lt;!&ndash;活动内容&ndash;&gt;
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">活动内容</label>
+                        <div class="layui-input-block">
+                            <textarea name="econtent" th:placeholder="${event.econtent}" class="layui-textarea" ></textarea>
+                        </div>
+                    </div>
+                    &lt;!&ndash;活动类型&ndash;&gt;
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">现代诗词线上活动</label>
+                        <div class="layui-input-inline">
+                            <select name="epoint1" lay-verify="">
+                                <option th:value="${event.epoint1}" selected></option>
+                                <option value="0">现代诗词线上活动</option>
+                                <option value="1">周常线上征文</option>
+                                <option value="3">节日线上征文</option>
+                                <option value="5">线下集会</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">古诗词线上活动</label>
+                        <div class="layui-input-inline">
+                            <select name="epoint2" lay-verify="" >
+                                <option th:value="${event.epoint2}" selected></option>
+                                <option value="0">古诗词线上活动</option>
+                                <option value="1">周常线上征文</option>
+                                <option value="3">节日线上征文</option>
+                                <option value="5">线下集会</option>
+                            </select>
+                        </div>
+                    </div>
+                    &lt;!&ndash;活动开始时间&ndash;&gt;
+                    &lt;!&ndash;<div class="layui-form-item ">
+                        <label class="layui-form-label">活动开始时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" id="laydate1" name="startime" th:value="${#dates.format(event.startime,'yyyy-MM-dd HH:mm:ss')}">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="layui-form-label">活动结束时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" id="laydate2" name="endtime" th:value="${#dates.format(event.endtime,'yyyy-MM-dd HH:mm:ss')}">
+                        </div>
+                    </div>&ndash;&gt;
+                    &lt;!&ndash;添加活动&ndash;&gt;
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button type="submit" class="layui-btn">修改活动信息</button>
+                        </div>
+                    </div>
+                </form>
+            </div>-->
+        </div>
+    </div>
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © layui.com - 底部固定区域
+    </div>
+    <script th:src="@{../../res/layui/layui.js}"></script>
+    <script th:src="@{../../res/jquery-3.1.1.min.js}"></script>
+    <script th:src="@{../../res/wangEditor.js}"></script>
+    <script th:inline="javascript">
+        var E = window.wangEditor
+        var editor = new E('#editor')
+        var econtent = [[${event.econtent}]]
+        editor.create()
+        editor.txt.html(econtent)
+        document.getElementById('btn1').addEventListener('click', function () {
+// 读取 html
+            var editor_txt = editor.txt.html();
+            document.getElementById('editor_txt').value = editor_txt;
+        }, false)
+    </script>
+    <script>
+        //JavaScript代码区域
+        layui.use('element', function () {
+            var element = layui.element;
+        });
+        layui.use('table', function () {
+            var table = layui.table;
+            table.render({
+                cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            });
+        });
+        layui.use(['layer', 'form'], function () {
+        });
+        layui.use('form', function () {
+            var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+
+            //……
+
+            //但是，如果你的HTML是动态生成的，自动渲染就会失效
+            //因此你需要在相应的地方，执行下述方法来进行渲染
+            form.render();
+        });
+
+        layui.use('laydate', function () {
+            var laydate1 = layui.laydate;
+            var laydate2 = layui.laydate;
+
+            //执行一个laydate实例
+            laydate1.render({
+                elem: '#laydate1', //指定元素
+                type: 'datetime',
+                format: 'yyyy-MM-dd HH:mm:ss'
+            });
+            laydate2.render({
+                elem: '#laydate2',
+                type: 'datetime',
+                format: 'yyyy-MM-dd HH:mm:ss'
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>蓝楹诗社后台管理系统—社费清单</title>
+    <link rel="stylesheet" th:href="@{../../res/layui/css/layui.css}">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="~{/html/admin/common/common :: #admin-topbar}"></div>
+    <div th:replace="~{/html/admin/common/common :: #admin-sidebar}"></div>
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div class="layui-row" style="padding: 15px;">
+            <div class="layui-elem-quote">
+                <p th:text="${userinfo.name}+'，欢迎回来！'"></p>
+            </div>
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>用户管理</legend>
+            </fieldset>
+            <!--添加-->
+            <div class="layui-col-md6">
+                <div class="layui-form layui-form-pane">
+                    <!--表单-->
+                    <form class="layui-form"
+                          th:action="@{/Funds/add}" method="post" lay-filter="example">
+                        <!--用户名-->
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">金额</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="fnumber" lay-verify="required" autocomplete="off"
+                                       class="layui-input" placeholder="支出请加负号!!">
+                            </div>
+                        </div>
+                        <!--学号-->
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">描述</label>
+                            <div class="layui-input-block">
+                                <textarea placeholder="用来干嘛了啊？" name="fdetail" autocomplete="off" class="layui-textarea"
+                                          style="height: 80px" lay-verify="required"></textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button type="submit" class="layui-btn">添加</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!--数据表-->
+            <table class="layui-table" id="table" lay-skin="line" lay-size="lg" style="padding: 15px">
+                <thead>
+                <tr>
+                    <th>经手人</th>
+                    <th>描述</th>
+                    <th th:text="'余额:'+${total}+'元'"></th>
+                    <th>日期</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="fund:${funds.list}">
+                    <td th:text="${fund.uname}"></td>
+                    <td th:text="${fund.fdetail}"></td>
+                    <td th:text="${fund.fnumber}+'元'"></td>
+                    <td th:text="${#dates.format(fund.fdate,'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td><a th:href="@{/Funds/delete(fid=${fund.fid})}"><i class="layui-icon">&#xe640;</i></a></td>
+                </tr>
+                </tbody>
+                <!--<button class="layui-btn" type="submit"></button>-->
+            </table>
+            <!--</form>-->
+            <div class="layui-col-md9">
+                <div style="padding: 15px">
+                    <a class="layui-btn" th:href="@{/Funds/manage(start=0)}">首页</a>
+                    <a class="layui-btn" th:href="@{/Funds/manage(start=${funds.pageNum-1})}"><i class="layui-icon">&#xe603;</i></a>
+                    <span th:text="'第'+${funds.pageNum}+'页'"></span>
+                    <a class="layui-btn" th:href="@{/Funds/manage(start=${funds.pageNum+1})}"><i class="layui-icon">&#xe602;</i></a>
+                    <a class="layui-btn" th:href="@{/Funds/manage(start=${funds.pages})}">末页</a>
+                </div>
+            </div>
+        </div>
+        <!--<div class="layui-hide" id="table" lay-filter="test">
+        </div>-->
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © layui.com - 底部固定区域
+    </div>
+</div>
+<script th:src="@{../../res/layui/layui.js}"></script>
+<script th:src="@{../../res/jquery-3.1.1.min.js}"></script>
+<script>
+    //JavaScript代码区域
+    layui.use('element', function () {
+        var element = layui.element;
+    });
+    layui.use('table', function () {
+        var table = layui.table;
+        table.render({
+            cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+        });
+    });
+    layui.use(['layer', 'form'], function () {
+    });
+    layui.use('form', function () {
+        var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+
+        //……
+
+        //但是，如果你的HTML是动态生成的，自动渲染就会失效
+        //因此你需要在相应的地方，执行下述方法来进行渲染
+        form.render();
+    });
+</script>
+</body>
+</html>

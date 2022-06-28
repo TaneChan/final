@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:shiro="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>帐号设置</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{../../res/layui/css/layui.css}"/>
+    <link rel="stylesheet" th:href="@{../../res/css/global.css}"/>
+</head>
+<body>
+
+<div class="fly-header layui-bg-black">
+    <div class="layui-container">
+        <a class="fly-logo" th:href="@{/HRLY/index}">
+            <img src="http://localhost:8081/img/00.jpg">
+        </a>
+        <ul class="layui-nav fly-nav">
+            <li class="layui-nav-item">
+                <a><i class="layui-icon">&#xe68e;</i>用户主页</a>
+            </li>
+            <li class="layui-nav-item layui-hide-xs" shiro:hasPermission="1">
+                <a th:href="@{/User/userManage}"><i class="iconfont icon-jiaoliu"></i>后台管理系统</a>
+            </li>
+        </ul>
+        <ul class="layui-nav fly-nav-user">
+            <!-- 登入后的状态 -->
+            <li class="layui-nav-item">
+                <a class="fly-nav-avatar" href="javascript:;">
+                    <!--用户名-->
+                    <cite class="layui-hide-xs">
+                        <span th:text="${userinfo.name}"></span>
+                        <!--<span shiro:principal property="name"/>-->
+                    </cite>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a th:href="@{/HRLY/userIndex}"><i class="layui-icon"
+                                                           style="margin-left: 2px; font-size: 22px;">&#xe612;</i>用户中心</a>
+                    </dd>
+                    <dd class="layui-this"><a th:href="@{/HRLY/setting}"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
+                    <dd><a th:href="@{/HRLY/home}"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a>
+                    </dd>
+                    <hr style="margin: 5px 0;">
+                    <dd><a th:href="@{/User/Logout}" style="text-align: center;">退出</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="layui-container fly-marginTop fly-user-main">
+    <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
+        <li class="layui-nav-item">
+            <a th:href="@{/HRLY/home}">
+                <i class="layui-icon">&#xe609;</i>
+                我的主页
+            </a>
+        </li>
+        <li class="layui-nav-item">
+            <a th:href="@{/HRLY/userIndex}">
+                <i class="layui-icon">&#xe612;</i>
+                用户中心
+            </a>
+        </li>
+        <li class="layui-nav-item layui-this">
+            <a th:href="@{/HRLY/setting}">
+                <i class="layui-icon">&#xe620;</i>
+                基本设置
+            </a>
+        </li>
+    </ul>
+
+    <div class="site-tree-mobile layui-hide">
+        <i class="layui-icon">&#xe602;</i>
+    </div>
+    <div class="site-mobile-shade"></div>
+
+    <div class="site-tree-mobile layui-hide">
+        <i class="layui-icon">&#xe602;</i>
+    </div>
+    <div class="site-mobile-shade"></div>
+
+
+    <div class="fly-panel fly-panel-user" pad20>
+        <div class="layui-form layui-form-pane">
+            <form class="layui-form"
+                  th:action="@{/HRLY/userUpdate}" method="post" lay-filter="example">
+                <!--学号-->
+                <div class="layui-form-item">
+                    <label class="layui-form-label">学号</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="uid" lay-verify="required" autocomplete="off" readonly
+                               unselectable="on"
+                               class="layui-input" th:value="${userinfo.id}">
+                    </div>
+                </div>
+                <!--用户名-->
+                <div class="layui-form-item">
+                    <label class="layui-form-label">姓名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="name" lay-verify="required" autocomplete="off"
+                               class="layui-input"
+                               th:value="${userinfo.name}">
+                    </div>
+                </div>
+                <!--用户密码-->
+                <div class="layui-form-item">
+                    <label class="layui-form-label">登录密码</label>
+                    <div class="layui-input-inline">
+                        <input type="password" name="password" lay-verify="required" autocomplete="off"
+                               class="layui-input"
+                               th:value="${userinfo.password}">
+                    </div>
+                </div>
+                <!--性别-->
+                <div class="layui-form-item ">
+                    <label class="layui-form-label">性别</label>
+                    <div class="layui-input-inline" th:switch="${userinfo.sexual}">
+                        <div th:case="1">
+                            <input type="radio" name="sex" th:value="1" title="男" checked="">
+                            <input type="radio" name="sex" th:value="0" title="女">
+                        </div>
+                        <div th:case="0">
+                            <input type="radio" name="sex" th:value="1" title="男">
+                            <input type="radio" name="sex" th:value="0" title="女" checked="">
+                        </div>
+                    </div>
+                </div>
+                <!--用户邮箱-->
+                <div class="layui-form-item">
+                    <label class="layui-form-label">邮箱</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="email" lay-verify="email" autocomplete="off"
+                               class="layui-input"
+                               th:value="${userinfo.email}">
+                    </div>
+                </div>
+                <!--古诗词版块积分-->
+                <div class="layui-form-item">
+                    <label class="layui-form-label">古诗词积分</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="point1" lay-verify="number" autocomplete="off"
+                               class="layui-input" readonly
+                               unselectable="on"
+                               th:value="${userinfo.point1}">
+                    </div>
+                </div>
+                <!--现代诗词积分-->
+                <div class="layui-form-item">
+                    <label class="layui-form-label">现代诗积分</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="point2" lay-verify="number" autocomplete="off"
+                               class="layui-input" readonly
+                               unselectable="on"
+                               th:value="${userinfo.point2}">
+                    </div>
+                </div>
+                <!--注册时间-->
+                <div class="layui-form-item">
+                    <label class="layui-form-label">注册时间</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="date" autocomplete="off" readonly unselectable="on"
+                               class="layui-input" th:value="${#dates.format(userinfo.date,'yyyy-MM-dd HH:mm:ss')}">
+                    </div>
+                </div>
+                <!--所属系别-->
+                <div class="layui-form-item">
+                    <label class="layui-form-label">系部门</label>
+                    <div class="layui-input-inline">
+                        <select name="apartment" lay-verify="" lay-search>
+                            <option th:value="${userinfo.apartment}" selected th:text="${userinfo.apartment}"></option>
+                            <option th:value="计算机系">计算机系</option>
+                            <option th:value="软件工程系">软件工程系</option>
+                            <option th:value="财会系">财会系</option>
+                            <option th:value="国贸系">国贸系</option>
+                            <option th:value="数码媒体系">数码媒体系</option>
+                            <option th:value="电子系">电子系</option>
+                            <option th:value="网络系">网络系</option>
+                            <option th:value="游戏系">游戏系</option>
+                            <option th:value="外语系">外语系</option>
+                            <option th:value="管理系">管理系</option>
+                        </select>
+                    </div>
+                </div>
+                <!--身份-->
+                <div class="layui-form-item ">
+                    <!--<label class="layui-form-label">社内身份</label>-->
+                    <div class="layui-input-inline">
+                        <span th:if="${userinfo.position}=='0'"><input hidden type="text" readonly name="position"
+                                                                       th:value="0"></span>
+                        <span th:if="${userinfo.position}=='1'"><input hidden type="text" readonly name="position"
+                                                                       th:value="1"></span>
+                        <!--<div th:case="1">
+                         th:switch="${userinfo.position}"
+                            <input type="radio" name="position" th:value="1" title="社长" checked="" Readonly/>
+                            <input type="radio" name="position" th:value="0" title="一般社员" Readonly/>
+                        </div>
+                        <div th:case="0">
+                            <input type="radio" name="position" th:value="1" title="社长" Readonly/>
+                            <input type="radio" name="position" th:value="0" title="一般社员" checked="" Readonly/>
+                        </div>-->
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button type="submit" class="layui-btn">修改</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="fly-footer">
+</div>
+
+<script th:src="@{../../res/layui/layui.js}"></script>
+<script th:src="@{../../res/jquery-3.1.1.min.js}"></script>
+<script>
+    layui.use('element', function () {
+        var element = layui.element;
+    });
+    layui.use('table', function () {
+        var table = layui.table;
+        table.render({
+            cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+        });
+    });
+    layui.use(['layer', 'form'], function () {
+    });
+    layui.use('form', function () {
+        var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+
+        //……
+
+        //但是，如果你的HTML是动态生成的，自动渲染就会失效
+        //因此你需要在相应的地方，执行下述方法来进行渲染
+        form.render();
+    });
+
+    layui.cache.page = 'user';
+    layui.cache.user = {
+        username: '游客'
+        , uid: -1
+        , avatar: '../../res/images/avatar/00.jpg'
+        , experience: 83
+        , sex: '男'
+    };
+    layui.config({
+        version: "2.0.0"
+        , base: '../../res/mods/'
+    }).extend({
+        fly: 'index'
+    }).use('fly');
+</script>
+
+</body>
+</html>

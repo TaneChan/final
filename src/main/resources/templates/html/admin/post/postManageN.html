@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>蓝楹诗社后台管理系统—现代诗词主题管理</title>
+    <link rel="stylesheet" th:href="@{../../res/layui/css/layui.css}">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="~{/html/admin/common/common :: #admin-topbar}"></div>
+    <div th:replace="~{/html/admin/common/common :: #admin-sidebar}"></div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div class="layui-row" style="padding: 15px;">
+            <div class="layui-elem-quote">
+                <p th:text="${userinfo.name}+'，欢迎回来！'"></p>
+            </div>
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>古诗词管理</legend>
+            </fieldset>
+            <!--搜索框-->
+            <!--<div class="layui-col-md9">
+                <form th:action="@{/User/userSearch}" method="post">
+                    <div class="layui-form-item">
+                        <div class="layui-input-inline">
+                            <input type="text" name="sid" autocomplete="on" class="layui-input">
+                        </div>
+                        <button type="submit" class="layui-btn">搜索</button>
+                    </div>
+                </form>
+            </div>-->
+            <!--发布主题-->
+            <div class="layui-col-md3" style="padding-bottom: 15px;padding-top: 15px">
+                <a class="layui-btn" th:href="@{/Post/toAdd}"><i class="layui-icon">&#xe654;</i>发布主题</a>
+            </div>
+            <!--数据表-->
+            <!--<form th:action="@{/User/batchDelete}" method="post">-->
+            <table class="layui-table" id="table" lay-skin="line" lay-size="lg">
+                <thead>
+                <tr>
+                    <!--<th></th>-->
+                    <th>主题编号</th>
+                    <th>用户id</th>
+                    <th>用户名</th>
+                    <th>所属系别</th>
+                    <th>标题</th>
+                    <th>所属版块</th>
+                    <th>发布时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="po : ${posts.list}">
+                    <!--<td><input type="checkbox" name="user" th:value="${user.id}"></td>-->
+                    <td th:text="${po.pid}">1</td>
+                    <td th:text="${po.id}">1</td>
+                    <td th:text="${po.pname}">neo</td>
+                    <td th:text="${po.papartment}">Otto</td>
+                    <td th:text="${po.ptitle}">Otto</td>
+                    <td>
+                        <span th:if="${po.psession}=='1'">现代诗词</span>
+                        <span th:if="${po.psession}=='2'">古诗词</span>
+                    </td>
+                    <td th:text="${#dates.format(po.pdate,'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td>
+                        <a th:href="@{/Post/showReply(pid=${po.pid})}"><i class="layui-icon">&#xe613;</i></a>
+                        <a th:href="@{/Post/editPost(pid=${po.pid})}"><i class="layui-icon">&#xe642;</i></a>
+                        <!--<button type="button" class="layui-btn layui-btn-radius" id="editor">编辑</button>-->
+                        <a th:href="@{/Post/deletePostByPId(pid=${po.pid})}"><i class="layui-icon">&#xe640;</i></a>
+                        <!--删除-->
+                    </td>
+                </tr>
+                </tbody>
+                <!--<button class="layui-btn" type="submit"></button>-->
+            </table>
+            <!--</form>-->
+            <div class="layui-col-md9">
+                <div style="padding: 15px">
+                    <a class="layui-btn" th:href="@{/Post/postManage1(start=0)}">首页</a>
+                    <a class="layui-btn" th:href="@{/Post/postManage1(start=${posts.pageNum-1})}"><i class="layui-icon">&#xe603;</i></a>
+                    <span th:text="'第'+${posts.pageNum}+'页'"></span>
+                    <a class="layui-btn" th:href="@{/Post/postManage1(start=${posts.pageNum+1})}"><i class="layui-icon">&#xe602;</i></a>
+                    <a class="layui-btn" th:href="@{/Post/postManage1(start=${posts.pages})}">末页</a>
+                </div>
+            </div>
+        </div>
+        <!--<div class="layui-hide" id="table" lay-filter="test">
+        </div>-->
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © layui.com - 底部固定区域
+    </div>
+</div>
+<script th:src="@{../../res/layui/layui.js}"></script>
+<script th:src="@{../../res/jquery-3.1.1.min.js}"></script>
+<script>
+    //JavaScript代码区域
+    layui.use('element', function () {
+        var element = layui.element;
+    });
+    /*layui.use('laypage', function () {
+        var laypage = layui.laypage;
+        laypage.render({
+            elem: 'table' //注意，这里的 test1 是 ID，不用加 # 号
+            , count: 10 //数据总数，从服务端得到
+        });
+    });*/
+
+</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>layout 后台大布局 - Layui</title>
+    <link rel="stylesheet" th:href="@{../../res/layui/css/layui.css}">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="~{/html/admin/common/common :: #admin-topbar}"></div>
+    <div th:replace="~{/html/admin/common/common :: #admin-sidebar}"></div>
+
+    <div class="layui-body">
+        <div class="layui-elem-quote">
+            <p th:text="${userinfo.name}+'，欢迎回来！'"></p>
+        </div>
+        <fieldset class="layui-elem-field layui-field-title">
+            <legend>用户管理</legend>
+        </fieldset>
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <table>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <th scope="row" th:text="${user.id}">1</th>
+                <td th:text="${user.name}">neo</td>
+                <td th:text="${user.password}">Otto</td>
+                <td th:text="${user.point1}">6</td>
+                <!--<td><a th:href="@{/toEdit(id=${user.id})}">edit</a></td>
+                <td><a th:href="@{/delete(id=${user.id})}">delete</a></td>-->
+            </tr>
+            </tbody>
+        </table></div>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © layui.com - 底部固定区域
+    </div>
+</div>
+<script th:src="@{../../res/layui/layui.js}"></script>
+<script>
+    //JavaScript代码区域
+    layui.use('element', function () {
+        var element = layui.element;
+
+    });
+</script>
+</body>
+</html>

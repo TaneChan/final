@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>华软蓝楹诗社-今来</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{../../res/layui/css/layui.css}"/>
+    <link rel="stylesheet" th:href="@{../../res/css/global.css}"/>
+</head>
+<body>
+
+<div th:replace="~{/html/commom/topbar :: #front-topbar}"></div>
+
+<div class="fly-panel fly-column">
+    <div class="layui-container">
+        <ul class="layui-clear">
+            <li class="layui-hide-xs"><a th:href="@{/HRLY/indexAll}">首页</a></li>
+            <li><a th:href="@{/HRLY/index2}">古诗词</a></li>
+            <li  class="layui-this"><a th:href="@{/HRLY/index1}">现代诗词</a></li>
+            <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li>
+
+            <!-- 用户登入后显示 -->
+            <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a th:href="@{/HRLY/userIndex}">我发表的贴</a>
+            </li>
+        </ul>
+
+        <div class="fly-column-right layui-hide-xs">
+            <span class="fly-search"><i class="layui-icon"></i></span>
+            <a th:href="@{/HRLY/toAdd}" class="layui-btn">发表新帖</a>
+        </div>
+        <div class="layui-hide-sm layui-show-xs-block"
+             style="margin-top: -10px; padding-bottom: 10px; text-align: center;">
+            <a href="jie/add.html" class="layui-btn">发表新帖</a>
+        </div>
+    </div>
+</div>
+
+<div class="layui-container">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md8">
+            <div class="fly-panel">
+                <div class="fly-panel-title fly-filter">
+                    <a>近期活动</a>
+                </div>
+                <ul class="fly-list">
+                    <li th:each="event:${events}">
+                        <a class="fly-avatar">
+                            <img src="http://localhost:8081/img/timg.jpg">
+                        </a>
+                        <h2>
+                            <a class="layui-badge">活动</a>
+                            <a th:href="@{/HRLY/eventDetail(eid=${event.eid})}" th:text="${event.etitle}">活动标题</a>
+                        </h2>
+                        <div class="fly-list-info">
+                            <span>开始于</span>
+                            <span th:text="${#dates.format(event.startime,'yyyy-MM-dd')}">开始时间</span>
+                            <span>至</span>
+                            <span th:text="${#dates.format(event.endtime,'yyyy-MM-dd HH:mm')}">结束时间</span>
+                            <span>截止</span>
+                        </div>
+                        <div class="fly-list-badge">
+                            <!--
+                            <span class="layui-badge layui-bg-black">置顶</span>
+                            <span class="layui-badge layui-bg-red">精帖</span>
+                            -->
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="fly-panel" style="margin-bottom: 0;">
+                <!--<div class="fly-panel-title fly-filter">
+                    <a href="" class="layui-this">综合</a>
+                    <span class="fly-mid"></span>
+                    <a href="">未结</a>
+                    <span class="fly-mid"></span>
+                    <a href="">已结</a>
+                    <span class="fly-mid"></span>
+                    <a href="">精华</a>
+                    <span class="fly-filter-right layui-hide-xs">
+            <a href="" class="layui-this">按最新</a>
+            <span class="fly-mid"></span>
+            <a href="">按热议</a>
+          </span>
+                </div>-->
+                <ul class="fly-list">
+                    <li th:each="post:${indexPost.list}">
+                        <a th:href="@{/HRLY/seehome(id=${post.id})}" class="fly-avatar">
+                            <img src="http://localhost:8081/img/timg.jpg">
+                        </a>
+                        <h2>
+                            <span th:if="${post.psession==1}"><a class="layui-badge">现代诗词</a></span>
+                            <span th:if="${post.psession==2}"><a class="layui-badge">古诗词</a></span>
+                            <a th:href="@{/HRLY/postDetail(pid=${post.pid})}" th:text="${post.ptitle}">主题标题</a>
+                        </h2>
+                        <div class="fly-list-info">
+                            <a th:href="@{/HRLY/seehome(id=${post.id})}" link th:text="${post.pname}">
+                                <!--
+                                <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
+                                <i class="layui-badge fly-badge-vip">VIP3</i>
+                                -->
+                            </a>
+                            <span th:text="${#dates.format(post.pdate,'yyyy-MM-dd HH:mm:ss')}">发布时间</span>
+                            </span>
+                        </div>
+                        <div class="fly-list-badge">
+                            <!--<span class="layui-badge layui-bg-red">精帖</span>-->
+                        </div>
+                    </li>
+                </ul>
+                <div style="text-align: center">
+                    <div style="padding: 15px">
+                        <a class="layui-btn" th:href="@{/HRLY/index1(start=0)}">首页</a>
+                        <a class="layui-btn" th:href="@{/HRLY/index1(start=${indexPost.pageNum-1})}"><i class="layui-icon">&#xe603;</i></a>
+                        <span th:text="'第'+${indexPost.pageNum}+'页'"></span>
+                        <a class="layui-btn" th:href="@{/HRLY/index1(start=${indexPost.pageNum+1})}"><i class="layui-icon">&#xe602;</i></a>
+                        <a class="layui-btn" th:href="@{/HRLY/index1(start=${indexPost.pages})}">末页</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div th:replace="~{/html/index::#index-osusume}"></div>
+    </div>
+</div>
+
+<div class="fly-footer">
+
+</div>
+
+<script th:src="@{../../res/layui/layui.js}"></script>
+<script>
+    layui.config({
+        version: "3.0.0"
+        , base: '../res/mods/' //这里实际使用时，建议改成绝对路径
+    }).extend({
+        fly: 'index'
+    }).use('fly');
+</script>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/c.php%3Fid%3D30088308' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</body>
+</html>
