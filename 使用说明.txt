@@ -1,0 +1,9 @@
+部署fdemo.sql文件到MySQL5.0以上的数据库系统软件
+将demo1文件夹的源代码项目在本地或服务端部署，推荐使用IDEA2018.x版本
+修改application.properties文件的数据库账号、密码以及数据库连接（根据部署环境修改）
+将项目部署到Tomcat7.0以上等web服务器
+启动服务器项目
+打开浏览器进入链接http://localhost:8081/User/toLogin
+默认超级管理员账号为admin
+超级管理员密码为123456
+登录后就能进行每个页面各个功能的操作
